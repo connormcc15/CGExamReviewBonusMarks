@@ -5,7 +5,7 @@ Shader "Custom/BumpMapping"
         _myDiffuse ("Diffuse Texture", 2D) = "white" {}
         _myBump ("Bump Texture", 2D) = "bump" {}
         _mySlider ("Bump Amount", Range(0,10)) = 1
-        _myColour ("Main Color", Color) = (1,1,1,1)
+        _myColour ("Main Color", Color) = (1,1,1,1) //Main Color modification
     }
 
     SubShader
@@ -47,7 +47,7 @@ Shader "Custom/BumpMapping"
 
             CBUFFER_START(UnityPerMaterial)
                 float _mySlider;
-                float4 _myColour;
+                float4 _myColour;//Added Color in CBUFFER
             CBUFFER_END
 
             Varyings vert(Attributes IN)
@@ -73,7 +73,7 @@ Shader "Custom/BumpMapping"
                 Light mainLight = GetMainLight();
                 half3 lightDirWS = normalize(mainLight.direction);
                 half NdotL = saturate(dot(normalWS, lightDirWS));
-                half3 diffuse = albedo.rgb * NdotL * _myColour;
+                half3 diffuse = albedo.rgb * NdotL * _myColour;//Adding colour in
                 return half4(diffuse, albedo.a);
             }
 

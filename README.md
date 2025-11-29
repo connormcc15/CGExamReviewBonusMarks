@@ -1,4 +1,4 @@
-# CGExamReviewBonusMarks
+CGExamReviewBonusMarks
 
 I made a bump mapping shader and modified it to take in a colour pass in the fragment shader.
 I applied this shader to the terrain of the level so that it enhances the look of the terrain while adding more detail to it.

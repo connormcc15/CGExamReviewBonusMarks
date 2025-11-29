@@ -4,6 +4,7 @@ Shader "Connor/Water"
     {
         _BaseColor ("Base Color", Color) = (0, 1, 1, 1)  // Default is light blue
         _MainTex ("Water Texture", 2D) = "white" {}
+        _FoamTex ("Foam", 2D) = "white" {} //Added Foam
         _Freq ("Wave Frequency", Range(0, 5)) = 3.0
         _Speed ("Wave Speed", Range(0, 10)) = 1.0
         _Amp ("Wave Amplitude", Range(0, 1)) = 0.1
@@ -11,7 +12,7 @@ Shader "Connor/Water"
 
     SubShader
     {
-        Tags { "RenderPipeline" = "UniversalRenderPipeline" "RenderType" = "Opaque" }
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Opaque" }
 
         Pass
         {
@@ -37,7 +38,9 @@ Shader "Connor/Water"
             // Declare properties for base color, texture, and wave parameters
             float4 _BaseColor;
             TEXTURE2D(_MainTex);
+            TEXTURE2D(_FoamTex); //Added Foam
             SAMPLER(sampler_MainTex);
+            SAMPLER(sampler_FoamTex); //Added Foam
 
             float _Freq;
             float _Speed;
@@ -69,7 +72,10 @@ Shader "Connor/Water"
             {
                 // Sample the texture and multiply by base color
                 half4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
-                return texColor * _BaseColor;
+                half4 foamColor = SAMPLE_TEXTURE2D(_FoamTex, sampler_FoamTex, IN.uv);
+
+                half4 finalColor = (texColor + foamColor) * _BaseColor;
+                return finalColor; 
             }
 
             ENDHLSL
